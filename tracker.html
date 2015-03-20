@@ -1,0 +1,199 @@
+<html>
+<head>
+<script src="http://fb.me/react-0.13.1.js"></script>
+    <script src="http://fb.me/JSXTransformer-0.13.1.js"></script>
+<style>
+
+
+
+
+
+.chosen-none .none-fill circle,
+.chosen-green .green-fill circle,
+.chosen-yellow .yellow-fill circle,
+.chosen-red .red-fill circle{
+    fill:white;
+    stroke-width:3;
+}
+
+.circle-wrapper text {
+    display:none;
+}
+
+.chosen-none .none-fill text,
+.chosen-green .green-fill text,
+.chosen-yellow .yellow-fill text,
+.chosen-red .red-fill text{
+    display:block;
+    stroke:none;
+    font-size: 20;
+}
+
+.chosen-none .none-fill circle{
+    stroke: #BABABA;
+}
+
+.chosen-green .green-fill circle {
+    stroke: #10AD42;
+}
+
+.chosen-yellow .yellow-fill circle {
+    stroke: #F5EE1D;
+}
+
+.chosen-red .red-fill circle {
+    stroke: #F51D28;
+}
+
+.none-fill {
+    fill:#BABABA;
+}
+
+.none-fill:hover{
+    fill:#D4D6D5;
+}
+
+.green-fill {
+    fill:#10AD42;
+}
+
+.green-fill:hover{
+    fill:#7ED69A;
+}
+
+.yellow-fill {
+    fill:#F5EE1D;
+}
+
+.yellow-fill:hover{
+    fill: #F5F2A2
+}
+
+.red-fill {
+    fill:#F51D28;
+}
+
+.red-fill:hover{
+    fill:#F5535B;
+}
+
+.ratingButton{
+    display:inline-block;
+    height: 80px;
+    width: 80px;
+}
+
+</style>
+</head>
+<body>
+
+ <div id="example"></div>
+ <div id="example2"></div>
+    <script type="text/jsx">
+
+     var HelloWorld = React.createClass({
+  render: function() {
+    return (
+      <p>
+        Hello, <input type="text" placeholder="Your name here" />!
+        It is {this.props.date.toTimeString()}
+      </p>
+    );
+  }
+});
+
+setInterval(function() {
+  React.render(
+    <HelloWorld date={new Date()} />,
+    document.getElementById('example')
+  );
+}, 500);
+
+
+    var MealBox = React.createClass({
+        render: function(){
+            return (
+                <div className="mealBox">
+                    <h1>Tuesday</h1>
+                    <MealList />
+
+
+                </div>
+            );
+
+        }
+
+    });
+
+    var MealList = React.createClass({
+        render: function(){
+            return (
+                <div className="mealList">
+                    <Meal mealName="Breakfast" />
+                    <Meal mealName="Lunch" />
+                    <Meal mealName="Dinner" />
+                    <Meal mealName="Snack" />
+                </div>
+
+            );
+
+        }
+
+    });
+
+    var Meal = React.createClass({
+        getInitialState: function(){
+            return{
+                rating: "none"
+            };
+
+        },
+        setRating: function(rating){ 
+        //If calling with bind(), ensure the meal object is passed as the first parameter so it can be (this)
+            console.log(rating);
+            this.setState({rating: rating});
+        },
+        render: function(){
+            var ratings = [ {code: "none", class: "none-fill",  name: "None"}, 
+                            {code: "green",  class: "green-fill", name: "YAY"}, 
+                            {code: "yellow",  class: "yellow-fill", name: "OK"}, 
+                            {code: "red",  class: "red-fill",  name: "MEH"}];
+            var thisMeal = this;
+            return (
+                <div className="meal">
+                <h2>{this.props.mealName} -- currently {this.state.rating}</h2>
+               
+
+                <div className={'circleWrapper chosen-' + this.state.rating}>
+                {ratings.map(function(rating){
+                return <svg key={rating.code} className={rating.class}  height="100" width="100">
+                        <g onClick={thisMeal.setRating.bind(thisMeal, rating.code)}>
+                            <circle  cx="50" cy="50"  r="40"   />
+                            <text x="50" y="55" textAnchor="middle" alignmentBaseline="middle">{rating.name}</text> 
+                               
+                        </g>
+                    </svg>
+
+
+                })}
+                </div>
+
+
+                </div>
+            );
+
+        }
+
+    });
+
+  React.render(
+    <MealBox  />,
+    document.getElementById('example2')
+  );
+
+
+    </script>
+  </body>
+
+</body>
+</html>
